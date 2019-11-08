@@ -21,3 +21,4 @@ END;
 /
 GRANT EXECUTE ON connexion TO deniauh1;
 
+-- SELECT deniauh1.connexion('a','a') FROM dual;

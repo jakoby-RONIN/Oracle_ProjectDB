@@ -35,7 +35,7 @@ public class DemoPMU {
         try {
             st.execute(query);
         }catch (SQLIntegrityConstraintViolationException e){
-            System.err.println("\nDésolé, identifiant déjà utilisérr!");
+            System.err.println("\nDésolé, identifiant déjà utilisé!");
             pause();
             return;
         }
