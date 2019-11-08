@@ -30,11 +30,19 @@ public class DemoPMU {
         String passwd = sc.nextLine();
 
 
-        String query = "CALL demo4.inscrire('" + nom + "','" + prenom + "','" + login + "','" + passwd + "')";
-        st.execute(query);
+        String query = "CALL deniauh1.inscrire('" + nom + "','" + prenom + "','" + login + "','" + passwd + "')";
 
-
+        try {
+            st.execute(query);
+        }catch (SQLIntegrityConstraintViolationException e){
+            System.err.println("\nDésolé, identifiant déjà utilisérr!");
+            pause();
+            return;
+        }
         System.out.println("\n\nVous êtes inscrit\n");
+
+
+
         pause();
     }
 
@@ -48,7 +56,7 @@ public class DemoPMU {
         System.out.print("Votre mot de passe: ");
         pwd = sc.nextLine();
 
-        ResultSet rset = st.executeQuery("SELECT demo4.connexion('" + login + "','" + pwd + "') FROM dual");
+        ResultSet rset = st.executeQuery("SELECT deniauh1.connexion('" + login + "','" + pwd + "') FROM dual");
         if (rset.next())
             ok = (rset.getInt(1) == 1);
         if (!ok) {
@@ -62,7 +70,7 @@ public class DemoPMU {
 
     static private void historique() throws SQLException {
         Statement st = cnx.createStatement();
-        ResultSet rset = st.executeQuery("SELECT id_ticket,nb_chevaux,desordre,montant,etat FROM TABLE(demo4.mes_tickets('" + login + "','" + pwd + "'))");
+        ResultSet rset = st.executeQuery("SELECT id_ticket,nb_chevaux,desordre,montant,etat FROM TABLE(deniauh1.mes_tickets('" + login + "','" + pwd + "'))");
 
         System.out.println("\n\nVos tickets:\n");
         System.out.println("num : #chevaux : desordre : montant : etat");
@@ -83,7 +91,7 @@ public class DemoPMU {
 
         // La vue non_courues est publique
         //
-        ResultSet res = st.executeQuery("SELECT * FROM demo4.non_courues");
+        ResultSet res = st.executeQuery("SELECT * FROM deniauh1.non_courues");
         while (res.next())
             System.out.println(res.getInt("ID_COURSE") + " " + res.getDate("QUAND") + " " + res.getString("LOCALITE") + " " + res.getString("LIBELLE"));
 
@@ -93,7 +101,7 @@ public class DemoPMU {
             System.out.println("\n\ndossard : cheval : jockey");
             System.out.println("-----------------------\n\n");
 
-            res = st.executeQuery("SELECT * FROM demo4.partants WHERE id_course=" + course);
+            res = st.executeQuery("SELECT * FROM deniauh1.partants WHERE id_course=" + course);
             while (res.next())
                 System.out.println(+res.getInt("NUMERO") + " : " + res.getString("CHEVAL") + " : " + res.getString("JOCKEY"));
 
@@ -114,7 +122,7 @@ public class DemoPMU {
 
                 // Créer le ticket en base : creer_ticket() doit renvoyer un numero de
                 // ticket > 0 si la création a réussie, 0 dans le cas contraire.
-                res = st.executeQuery("SELECT demo4.creer_ticket('" + login + "','" + pwd + "'," + nbchevaux + "," + desordre + "," + montant + ") FROM dual");
+                res = st.executeQuery("SELECT deniauh1.creer_ticket('" + login + "','" + pwd + "'," + nbchevaux + "," + desordre + "," + montant + ") FROM dual");
 
                 // Ajouter les dossards à ce ticket, au fur et à mesure
                 // qu'ils sont lus à partir de l'entrée standard
@@ -124,7 +132,7 @@ public class DemoPMU {
                         int d = sc.nextInt();
 
                         // ajout du dossard d en position i
-                        String query = "CALL demo4.ajout_mise_ticket('" + login + "','" + pwd + "'," + id_ticket + "," + course + "," + d + "," + i + ")";
+                        String query = "CALL deniauh1.ajout_mise_ticket('" + login + "','" + pwd + "'," + id_ticket + "," + course + "," + d + "," + i + ")";
                         st.execute(query);
 
                     }
@@ -143,7 +151,7 @@ public class DemoPMU {
         boolean connecte = false;
 
         // Connexion vers Oracle
-        cnx = DriverManager.getConnection("jdbc:oracle:thin:@mvx1.esiee.fr:1521:xe", "demo5", "azertyuiop");
+        cnx = DriverManager.getConnection("jdbc:oracle:thin:@mvx1.esiee.fr:1521:xe", "deniauh2", "Eet6HFkm6nr");
         cnx.setAutoCommit(true);
 
         // menu principal
