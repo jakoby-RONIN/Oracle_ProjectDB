@@ -7,17 +7,17 @@ public class DemoPMU {
     public static Scanner sc;
     public static String login, pwd;
 
-    static private void clearScreen(String titre) {
+    private static void clearScreen(String titre) {
         System.out.print("\033[H\033[2J");
         System.out.println("EIG-2011 == Démo Mini-projet == " + titre + "\n\n");
     }
 
-    static private void pause() {
+    private static void pause() {
         System.out.print("\nPressez ENTREE pour retourner au menu");
         sc.nextLine();
     }
 
-    static private void inscription() throws SQLException {
+    private static void inscription() throws SQLException {
         Statement st = cnx.createStatement();
 
         System.out.print("\nVotre nom: ");
@@ -46,7 +46,7 @@ public class DemoPMU {
         pause();
     }
 
-    static private boolean connexion() throws SQLException {
+    private static boolean connexion() throws SQLException {
         boolean ok = false;
         Statement st = cnx.createStatement();
 
@@ -68,7 +68,7 @@ public class DemoPMU {
         return ok;
     }
 
-    static private void historique() throws SQLException {
+    private static void historique() throws SQLException {
         Statement st = cnx.createStatement();
         ResultSet rset = st.executeQuery("SELECT id_ticket,nb_chevaux,desordre,montant,etat FROM TABLE(deniauh1.mes_tickets('" + login + "','" + pwd + "'))");
 
@@ -82,7 +82,7 @@ public class DemoPMU {
         pause();
     }
 
-    static private void parier() throws SQLException {
+    private static void parier() throws SQLException {
         Statement st = cnx.createStatement();
 
         // liste des courses non courues
