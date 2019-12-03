@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION mes_tickets(
+create or replace NONEDITIONABLE FUNCTION mes_tickets(
   xident VARCHAR,
   xpwd VARCHAR
 )
@@ -11,10 +11,10 @@ BEGIN
     IF (myid > 0) THEN
         SELECT
         cast(multiset( SELECT * FROM
-        ((select tickets_gagnants.*,’gagnant’ as etat from tickets_gagnants) union
-        (select tickets_perdants.*,’perdant’ as etat from tickets_perdants) union
-        (select distinct id_ticket,nb_chevaux,desordre,montant,id_personne,’non couru’
-        from ticket natural join mise natural join course where terminee=0)) where
+        ((select tickets_gagnants.*,'gagnant' as etat from tickets_gagnants) union
+        (select tickets_perdants.*,'perdant' as etat from tickets_perdants) union
+        (select distinct id_ticket,nb_chevaux,desordre,montant,id_personne,'non couru'
+        from tickets natural join mise natural join courses where terminee=0)) where
         id_personne=myid) AS ticket_table)
         INTO ret FROM dual;
     ELSE
