@@ -5,8 +5,8 @@ create or replace NONEDITIONABLE function creer_ticket(
   xdesordre IN integer,
   xmontant IN numeric
 ) return integer
-
 AS
+PRAGMA AUTONOMOUS_TRANSACTION;
 id INTEGER;
 ticket INTEGER;
 BEGIN
@@ -15,8 +15,9 @@ BEGIN
   IF id != 0 THEN
     SELECT MAX(id_ticket)+1 INTO ticket FROM tickets;
     INSERT INTO tickets VALUES (ticket, xnb_chevaux, xdesordre, xmontant, id);
+    COMMIT;
     return id;
   ELSE
     return 0;
   END IF;
-  END;
+END;

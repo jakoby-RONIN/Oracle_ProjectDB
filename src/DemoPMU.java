@@ -130,9 +130,9 @@ public class DemoPMU {
                     System.out.print("Liste de vos dossards, séparés par un espace: ");
                     for (int i = 1; i <= nbchevaux; i++) {
                         int d = sc.nextInt();
-
                         // ajout du dossard d en position i
                         String query = "CALL deniauh1.ajout_mise_ticket('" + login + "','" + pwd + "'," + id_ticket + "," + course + "," + d + "," + i + ")";
+                        System.out.println(query);
                         st.execute(query);
 
                     }
